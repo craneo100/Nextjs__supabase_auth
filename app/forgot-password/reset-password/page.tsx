@@ -5,7 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
+  //CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -25,7 +25,7 @@ import { z } from "zod";
 import { resetPasswordFunc } from "./action";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
+//import Link from "next/link";
 
 const formSchema = z.object({
   password: z.string().min(6),
@@ -62,6 +62,7 @@ export default function ResetPassword() {
         // Redirect to the confirmation page
         router.push("/dashboard");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setServerError("An unexpected error occurred. Please try again.");
     } finally {

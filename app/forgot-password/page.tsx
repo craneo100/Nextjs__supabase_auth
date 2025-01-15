@@ -61,6 +61,7 @@ export default function ForgotPassword() {
         // Redirect to the dashboard page
         router.push("/forgot-password/confirmation");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setServerError("An unexpected error occurred. Please try again.");
     } finally {
@@ -120,7 +121,7 @@ export default function ForgotPassword() {
             </Link>
           </div>
           <div className="text-muted-foreground text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" className="underline">
               Register
             </Link>

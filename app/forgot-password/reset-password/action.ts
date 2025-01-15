@@ -12,9 +12,8 @@ export const resetPasswordFunc = async ({
   passwordConfirm: string;
 }) => {
   const newUserSchema = z.object({
-    password: z.string().min(6),
-    passwordConfirm: z.string().min(6),
-  });
+    password: z.string().min(8),
+    passwordConfirm: z.string().min(8),  });
 
   const newUserValidation = newUserSchema.safeParse({
     password,

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -13,9 +12,9 @@ export default function GoogleSignin() {
   const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
   const supabase = createClient();
 
-  const searchParams = useSearchParams();
 
-  const next = searchParams.get("next");
+
+ 
 
   async function signInWithGoogle() {
     setIsGoogleLoading(true);
@@ -23,15 +22,17 @@ export default function GoogleSignin() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback${
-            next ? `?next=${encodeURIComponent(next)}` : ""
-          }`,
-        },
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            next: '/dashboard'
+          }
+        }
       });
 
       if (error) {
         throw error;
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
         title: "Please try again.",

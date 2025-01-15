@@ -153,6 +153,7 @@
 //   );
 // }
 
+// Comentando lo que no estaba comentado
 "use client";
 
 import {
@@ -218,6 +219,7 @@ export default function LoginForm() {
         // Redirect to the dashboard page
         router.push("/dashboard");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setServerError("An unexpected error occurred. Please try again.");
     } finally {
@@ -287,7 +289,7 @@ export default function LoginForm() {
         </CardContent>
         <CardFooter className="flex-col gap-2">
           <div className="text-muted-foreground text-sm">
-            Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
             <Link href="/register" className="underline">
               Register
             </Link>
