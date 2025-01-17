@@ -4,9 +4,9 @@ import LoginForm from "./LoginForm";
 
 export default async function LoginPage() {
   const supabase = createClient();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data, error } = await supabase.auth.getUser();
-  if (data.user) {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (session) {
     redirect("/dashboard");
   }
 
