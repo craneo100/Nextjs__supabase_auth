@@ -22,7 +22,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { loginUser } from "./action";
+import { signUpUser } from "./action";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -30,11 +30,11 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 
 const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().email(),
   password: passwordSchema,
 });
 
-export default function LoginForm() {
+export default function SignUpForm() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
   const [isPending, setIsPending] = useState(false);
@@ -49,26 +49,23 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setIsPending(true);
-      setError("");
+    setIsPending(true);
+    setError("");
 
-      const { error } = await loginUser(values);
+    const { error } = await signUpUser(values);
 
-      if (error) throw error;
-
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to login");
-    } finally {
+    if (error) {
+      setError(error.message);
       setIsPending(false);
+      return;
     }
+
+    router.push("/login?message=Check your email to continue sign in process");
+    router.refresh();
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleSignUp = async () => {
     try {
-      setIsPending(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -76,10 +73,8 @@ export default function LoginForm() {
         }
       });
       if (error) throw error;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to login with Google");
-    } finally {
-      setIsPending(false);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -87,8 +82,8 @@ export default function LoginForm() {
     <main className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Welcome back!</CardDescription>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>Create your account</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -123,30 +118,29 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
-              {error && (
-                <div className="text-sm text-red-500 dark:text-red-500">
-                  {error}
-                </div>
-              )}
-              <Button type="submit" className="w-full" disabled={isPending}>
+              {error && <p className="text-sm text-red-500">{error}</p>}
+              <Button disabled={isPending} className="w-full" type="submit">
                 {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Login
+                Sign Up
               </Button>
             </form>
           </Form>
+
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t"></div>
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with
+              </span>
             </div>
           </div>
 
-          <Button 
-            variant="outline" 
-            className="w-full" 
-            onClick={handleGoogleLogin}
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleGoogleSignUp}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
               <path
@@ -171,9 +165,9 @@ export default function LoginForm() {
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-sm text-muted-foreground text-center">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
-              Sign up
+            Already have an account?{" "}
+            <Link href="/login" className="text-primary hover:underline">
+              Login
             </Link>
           </div>
         </CardFooter>

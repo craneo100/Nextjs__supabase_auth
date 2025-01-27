@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Supabase Auth App
 
-## Getting Started
+A modern authentication system built with Next.js 14, Supabase, and ShadcnUI.
 
-First, run the development server:
+## Features
+
+- 🔐 **Authentication**
+  - Email/Password login
+  - Google OAuth
+  - Password reset flow
+  - Strong password requirements
+  - Protected routes
+
+- 🛡️ **Security**
+  - CSRF protection
+  - Rate limiting
+  - Security headers (CSP, HSTS)
+  - XSS protection
+  - Strong password validation
+
+- 💾 **Data Management**
+  - Memory storage and retrieval
+  - Real-time updates
+  - Type-safe database operations
+
+- 🎨 **UI/UX**
+  - Modern design with ShadcnUI
+  - Responsive layout
+  - Loading states
+  - Error boundaries
+  - Toast notifications
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Authentication**: Supabase Auth
+- **Database**: Supabase
+- **Email Service**: Resend
+- **Styling**: Tailwind CSS
+- **UI Components**: ShadcnUI
+- **Form Management**: React Hook Form + Zod
+- **TypeScript**: For type safety
+
+## Prerequisites
+
+- Node.js 18+
+- npm/yarn/pnpm
+- Supabase account
+- Resend account
+
+## Environment Variables
+
+Create a `.env.local` file:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+RESEND_API_KEY=your_resend_api_key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd nextjs-supabase-auth
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Learn More
+3. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Password Requirements
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Passwords must meet the following criteria:
+- Minimum 8 characters
+- Maximum 100 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+- At least one special character (@$!%*?&)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Security Features
 
-## Deploy on Vercel
+- **Rate Limiting**: 30 requests per minute for auth endpoints
+- **Security Headers**:
+  - Content Security Policy (CSP)
+  - HTTP Strict Transport Security (HSTS)
+  - X-Frame-Options
+  - X-Content-Type-Options
+  - Referrer-Policy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Error Handling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Global error boundary for catching runtime errors
+- Form validation errors with helpful messages
+- API error handling with toast notifications
+- Loading states for better UX
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a pull request
+
+## License
+
+MIT
