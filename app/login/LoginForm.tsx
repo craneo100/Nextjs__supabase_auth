@@ -49,37 +49,32 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setIsPending(true);
-      setError("");
+    setIsPending(true);
+    setError("");
 
-      const { error } = await loginUser(values);
+    const { error } = await loginUser(values);
 
-      if (error) throw error;
-
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to login");
-    } finally {
+    if (error) {
+      setError(error.message);
       setIsPending(false);
+      return;
     }
+
+    router.push("/dashboard");
+    router.refresh();
   };
 
   const handleGoogleLogin = async () => {
     try {
-      setIsPending(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${location.origin}/auth/callback`
-        }
-      });
-      if (error) throw error;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to login with Google");
-    } finally {
-      setIsPending(false);
+          redirectTo: `${location.origin}/auth/callback`,
+        },
+      })
+      if (error) throw error
+    } catch (error) {
+      console.error('Error:', error)
     }
   };
 
