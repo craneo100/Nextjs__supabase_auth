@@ -1,9 +1,23 @@
 "use server";
 
 import { z } from "zod";
-
 import { createClient } from "@/utils/supabase/server";
-// import { redirect } from "next/navigation";
+
+interface LoginError {
+  success: false;
+  message: string;
+}
+
+interface LoginSuccess {
+  success: true;
+  message: string;
+  user: {
+    id: string;
+    email: string;
+  };
+}
+
+type LoginResult = LoginError | LoginSuccess;
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -16,7 +30,7 @@ export const loginUser = async ({
 }: {
   email: string;
   password: string;
-}) => {
+}): Promise<LoginResult> => {
   const loginUserValidation = loginSchema.safeParse({
     email,
     password,
@@ -24,7 +38,7 @@ export const loginUser = async ({
 
   if (!loginUserValidation.success) {
     return {
-      error: true,
+      success: false,
       message:
         loginUserValidation.error.issues[0]?.message ?? "An error occured",
     };
@@ -52,26 +66,24 @@ export const loginUser = async ({
 
   if (error) {
     return {
-      error: true,
+      success: false,
       message: error.message,
     };
   }
 
   if (!data.user) {
     return {
-      error: true,
-      message: "Login failed. Please try again.",
+      success: false,
+      message: "No user returned from login",
     };
   }
 
-  // User successfully logged in
   return {
     success: true,
-    message: "Login successful",
+    message: "Successfully logged in",
     user: {
       id: data.user.id,
-      email: data.user.email,
-      // Add any other user data you want to return
-    },
+      email: data.user.email ?? ''
+    }
   };
 };

@@ -52,10 +52,10 @@ export default function LoginForm() {
     setIsPending(true);
     setError("");
 
-    const { error } = await loginUser(values);
+    const result = await loginUser(values);
 
-    if (error) {
-      setError(error.message);
+    if (!result.success) {
+      setError(result.message);
       setIsPending(false);
       return;
     }
